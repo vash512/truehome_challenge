@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.conf.urls import url
+from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.shortcuts import redirect
@@ -12,6 +12,7 @@ admin.site.index_title = "TrueHome Challenge"
 urlpatterns = [
     url(r'^$', lambda request: redirect('admin/', permanent=False)),
     url(r'^admin/', admin.site.urls),
+    url(r'^api/', include('api.urls')),
 ]
 
 
