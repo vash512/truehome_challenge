@@ -1,16 +1,51 @@
 # -*- coding: utf-8 -*-
-# from django.contrib.auth.models import User
+from activity.models import (
+    Activity,
+    ActivityCancelledError,
+    ChangeSchedulesError,
+    DisabledPropertyError,
+    SimilarSchedulesError,
+    Survey
+)
 
-from activity.models import Activity, Survey
 
 from django.utils import timezone
 
 from property.models import Property
 
 from rest_framework import serializers
+from rest_framework.exceptions import PermissionDenied, ValidationError
 
 
-class ActivitySerializer(serializers.ModelSerializer):
+class ActivityBusinessValidation:
+    """Check the Business Logics on saved objects.."""
+
+    def save(self, *args, **kwargs):
+        try:
+            return super().save(*args, **kwargs)
+        except ActivityCancelledError:
+            raise PermissionDenied("Canceled activities cannot be modified.")
+        except DisabledPropertyError:
+            raise ValidationError({
+                "property": "You cannot create activities to a "
+                "disabled property."
+            })
+        except ChangeSchedulesError:
+            raise ValidationError({
+                "schedule": "Only the date can be changed, not the time."
+            })
+        except SimilarSchedulesError:
+            raise ValidationError({
+                "schedule": "Similar schedules already exist for "
+                "this Property."
+            })
+        except Exception as e:
+            raise e
+
+
+class ActivitySerializer(
+    ActivityBusinessValidation, serializers.ModelSerializer
+):
 
     class Meta:
         model = Activity
@@ -57,7 +92,9 @@ class ActivityRetrieveSerializer(serializers.ModelSerializer):
         ]
 
 
-class ActivityUpdateSerializer(serializers.ModelSerializer):
+class ActivityUpdateSerializer(
+    ActivityBusinessValidation, serializers.ModelSerializer
+):
 
     class Meta:
         model = Activity
@@ -66,8 +103,7 @@ class ActivityUpdateSerializer(serializers.ModelSerializer):
             "property",
             "title",
             "created_at",
-            "updated_at",
-            "status",
+            "updated_at"
         ]
 
 

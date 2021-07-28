@@ -1,0 +1,41 @@
+[
+    {
+        "model": "activity.activity",
+        "pk": 1,
+        "fields":
+        {
+            "property": 1,
+            "schedule": "2021-07-28T23:00:00Z",
+            "title": "Activity test",
+            "created_at": "2021-07-27T23:06:55.436Z",
+            "updated_at": "2021-07-28T04:44:10.515Z",
+            "status": "active"
+        }
+    },
+    {
+        "model": "activity.activity",
+        "pk": 2,
+        "fields":
+        {
+            "property": 1,
+            "schedule": "2021-07-27T23:35:00Z",
+            "title": "Activity test cancelled",
+            "created_at": "2021-07-28T00:36:31.092Z",
+            "updated_at": "2021-07-28T00:36:31.092Z",
+            "status": "cancelled"
+        }
+    },
+    {
+        "model": "activity.activity",
+        "pk": 3,
+        "fields":
+        {
+            "property": 1,
+            "schedule": "2021-07-27T23:35:00Z",
+            "title": "Activity test schedule",
+            "created_at": "2021-07-28T00:51:24.722Z",
+            "updated_at": "2021-07-28T00:51:24.722Z",
+            "status": "done"
+        }
+    }
+]

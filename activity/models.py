@@ -40,7 +40,9 @@ class Activity(models.Model):
     title = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    status = models.CharField(max_length=35, choices=STATUS_CHOICES)
+    status = models.CharField(
+        max_length=35, default="active", choices=STATUS_CHOICES
+    )
 
     def save(self, *args, **kwargs):
         is_created = True if self.pk is None else False
@@ -51,17 +53,14 @@ class Activity(models.Model):
             original_schedule, original_status = Activity.objects\
                 .values_list("schedule", "status").get(id=self.id)
             original_schedule = get_datetime_mx(original_schedule)
-            print(original_schedule)
-            print(original_status)
 
             if original_status == "cancelled":
-                # un objeto cancelado ya no se puede modificar
-                return
+                raise ActivityCancelledError(
+                    "A canceled activity can no longer be modified."
+                )
 
-            # print(original_schedule, "  ", original_schedule.time())
-            # print(self.schedule, "  ", self.schedule.time())
             if original_schedule.time() != self.schedule.time():
-                raise DisabledPropertyError(
+                raise ChangeSchedulesError(
                     "Only the date can be changed, not the time."
                 )
 
@@ -75,7 +74,8 @@ class Activity(models.Model):
         activities_queryset = self.property.activities.filter(
             schedule__gt=self.schedule - timedelta(hours=1),
             schedule__lt=self.schedule + timedelta(hours=1)
-        ).exclude(status="cancelled")
+        ).exclude(status__in=["cancelled", "done"])
+        # ).exclude(status="cancelled")
         if not is_created:
             activities_queryset = activities_queryset.exclude(id=self.id)
 

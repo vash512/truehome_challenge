@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import timedelta
 
-from activity.models import Activity  # , Survey
+from activity.models import Activity
 
 from api.mixins import MultiSerializerModelViewSet
 
@@ -24,7 +24,16 @@ class ActivityViewSet(MultiSerializerModelViewSet):
     }
 
     def get_queryset(self):
-        # filter query_params
+        """
+        Filtering rules.
+
+        1°.- If schedule_gte or schedule_lte is not sent, the filtering must
+        comply with:
+            (current_date - 3 days) <= schedule <= (current_date + 2 weeks)
+        2°.- if sent, the first rule will be skipped and filtered by the
+        range of dates given.
+
+        """
         if self.action not in ["list"]:
             return Activity.objects.all()
         schedule_gte = self.request.query_params.get("schedule_gte")

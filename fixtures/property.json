@@ -1,0 +1,30 @@
+[
+    {
+        "model": "property.property",
+        "pk": 1,
+        "fields":
+        {
+            "title": "Property Title Test",
+            "address": "Property Address Test",
+            "description": "Property Description Test",
+            "created_at": "2021-07-27T22:58:54.834Z",
+            "updated_at": "2021-07-28T00:51:24.714Z",
+            "disabled_at": null,
+            "status": "enabled"
+        }
+    },
+    {
+        "model": "property.property",
+        "pk": 2,
+        "fields":
+        {
+            "title": "Property Title Test 2",
+            "address": "Property Address Test 2",
+            "description": "Property Description Test 2",
+            "created_at": "2021-07-27T23:00:01.210Z",
+            "updated_at": "2021-07-27T23:22:25.129Z",
+            "disabled_at": "2021-07-27T23:00:00Z",
+            "status": "disabled"
+        }
+    }
+]
