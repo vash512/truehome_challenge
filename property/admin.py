@@ -26,7 +26,7 @@ class PropertyAdmin(admin.ModelAdmin):
     inlines = [
         ActivityInline,
     ]
-    readonly_fields = ["created_at", "updated_at", ]
+    readonly_fields = ["created_at", "updated_at", "status"]
     search_fields = ["title", "address", "description", ]
 
 admin.site.register(Property, PropertyAdmin)

@@ -12,7 +12,7 @@ admin.site.index_title = "TrueHome Challenge"
 urlpatterns = [
     url(r'^$', lambda request: redirect('admin/', permanent=False)),
     url(r'^admin/', admin.site.urls),
-    url(r'^api/', include('api.urls')),
+    url(r'^api/', include('api.urls', namespace='api')),
 ]
 
 

@@ -11,4 +11,6 @@ urlpatterns = [
     url(r'^token-auth/', views.obtain_auth_token),
 
     url(r'^login/', UserLoginAPIView.as_view(), name='login'),
+    url(r'^property/', include("property.api.urls", namespace='property')),
+    url(r'^activity/', include("activity.api.urls", namespace='activity')),
 ]
